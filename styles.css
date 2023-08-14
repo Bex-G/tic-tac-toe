@@ -35,6 +35,13 @@ body {
     grid-template-rows: 1fr 1fr 1fr;
 }
 
+.box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+}
+
 #a1 {
     border-right: solid black 2px;
     border-bottom: solid black 2px;;
