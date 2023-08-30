@@ -1,3 +1,10 @@
+const playerFactory = (name, token, score) => {
+    return {name, token, score};
+}
+
+const playerX = playerFactory("X", "X", 0);
+const playerO = playerFactory("O", "O", 0);
+
 const game = (() => {
     let gameBoard = {
         'a1': "1",
@@ -20,12 +27,19 @@ const game = (() => {
             return token = "O";
         }
     }
+    function changeTurnDisplay(turnNumber) {
+            if (turnNumber % 2 === 0) { 
+                display.textContent = playerO.name + "'s turn";      
+            } else {
+                display.textContent = playerX.name + "'s turn";
+            }
+    }
     function callTheRound() {
         function findWinner(winningToken) {
-            if (winningToken === player1.token) {
-                console.log(player1.name + " wins!")
+            if (winningToken === playerX.token) {
+                display.textContent = playerX.name + " wins!";
             } else {
-                console.log(player2.name + " wins!")
+                display.textContent = playerO.name + " wins!";
             }
         }
         if (gameBoard.a1 === gameBoard.a2 && gameBoard.a2 === gameBoard.a3) {
@@ -52,14 +66,17 @@ const game = (() => {
         } else if (gameBoard.a3 === gameBoard.b2 && gameBoard.b2 === gameBoard.c1) {
             let winningToken = gameBoard.a3;
             findWinner(winningToken);
-        } 
+        } else if (turnNumber === 10) {
+            display.textContent = "it's a tie";
+        }
     }
-    return {gameBoard, takeTurns, addToBoard, callTheRound};
+    return {gameBoard, takeTurns, changeTurnDisplay, addToBoard, callTheRound};
 })();
 
-let turnNumber = 1;
+const display = document.getElementById('display');
+display.textContent = playerX.name + "'s turn";
 
-//displays tokens and works with addToBoard to update gameBoard values
+let turnNumber = 1;
 
 const boxes = document.querySelectorAll('.box');
 
@@ -69,8 +86,9 @@ boxes.forEach(box => {
     ++turnNumber;
     
     game.takeTurns(turnNumber);
+    game.changeTurnDisplay(turnNumber);
 
-    const boxContent = document.createTextNode(token)
+    const boxContent = document.createTextNode(token);
     box.appendChild(boxContent);
     
     let target = e.target.id;
@@ -79,13 +97,3 @@ boxes.forEach(box => {
     game.callTheRound();
     }, {once : true});
 })
-
-
-// quick method to create players
-
-const playerFactory = (name, token) => {
-    return {name, token};
-}
-
-const player1 = playerFactory("Bex", "X");
-const player2 = playerFactory("Carly", "O");
