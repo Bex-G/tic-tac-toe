@@ -1,1 +1,1 @@
-# tic-tac-toe
+This project was primarily an exercise in using factory functions and modules, which in turn, gave me a nice excuse to play with scope and the practice of limiting global code.
